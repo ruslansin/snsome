@@ -83,11 +83,11 @@ local function builder(s)
     -- }}}
 
     -- Keyboard map indicator and switcher
-    keyboardlayout = awful.widget.keyboardlayout()
+    local keyboardlayout = awful.widget.keyboardlayout()
 
     -- {{{ Wibar
     -- Create a textclock widget
-    textclock = wibox.widget.textclock()
+    local textclock = wibox.widget.textclock()
 
     -- Create a wibox for each screen and add it
     awful.util.taglist_buttons = awful.util.table.join(
@@ -140,7 +140,7 @@ local function builder(s)
     awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
-    local promptbox = awful.widget.prompt()
+    s.promptbox = awful.widget.prompt()
 
     layoutbox = awful.widget.layoutbox(s)
     layoutbox:buttons(
@@ -167,7 +167,7 @@ local function builder(s)
             layout = wibox.layout.fixed.horizontal,
             launcher,
             taglist,
-            promptbox,
+            s.promptbox,
         },
         nil,
         {

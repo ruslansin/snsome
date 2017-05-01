@@ -12,24 +12,24 @@ local themes_path = gfs.get_themes_dir()
 local theme = {}
 theme.confdir = os.getenv("HOME").."/.config/awesome/themes/default"
 
-theme.font          = "sans 8"
+theme.font          = "Tamzen 9"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
+theme.bg_normal     = "#000000"
+theme.bg_focus      = "#000000"
+theme.bg_urgent     = "#000000"
+--theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
+theme.fg_focus      = "#ff8c00"
+theme.fg_urgent     = "#af1d18"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = 0
 theme.border_width  = dpi(1)
-theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
-theme.border_marked = "#91231c"
+theme.border_normal = "#1c2022"
+theme.border_focus  = "#606060"
+theme.border_marked = "#3ca4d8"
 
 -- There are other variable sets
 -- overriding the default one when

@@ -5,6 +5,7 @@ local menubar = require("menubar")
 local utils = require("window.utils")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local freedesktop = require("freedesktop")
+local lain = require("lain")
 
 local function client_menu_toggle_fn()
     local instance = nil
@@ -25,11 +26,11 @@ end
 
 local function builder(s)
 
-	local terminal = awesome.xrdb_get_value("", "snsome.terminal") or "xterm";
+    local terminal = awesome.xrdb_get_value("", "snsome.terminal") or "xterm";
     local editor = awesome.xrdb_get_value("", "snsome.editor") or os.getenv("EDITOR") or "nano";
     local editor_cmd = terminal .. " -e " .. editor
 
-
+    local markup = lain.util.markup
     -- Table of layouts to cover with awful.layout.inc, order matters.
     awful.layout.layouts = {
         awful.layout.suit.floating,
@@ -133,7 +134,7 @@ local function builder(s)
         end))
 
 
-	-- Wallpaper
+    -- Wallpaper
     utils.set_wallpaper(s)
 
     -- Each screen has its own tag table.
@@ -157,6 +158,23 @@ local function builder(s)
     -- Create a tasklist widget
     local tasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
+    local volumebox = lain.widget.pulseaudio({
+        settings = function()
+            local current_volume = "N/A"
+            if volume_now.left == volume_now.right then
+                current_volume = string.format("%s%%", volume_now.left)
+            else
+                current_volume = string.format("l.%s|r.%s%%", volume_now.left, volume_now.right)
+            end
+            if volume_now.muted == "yes" then
+                current_volume = string.format("%s mute", current_volume)
+            end
+            widget:set_markup(markup.fontfg(
+                theme.font, theme.fg_normal, string.format(" V: %s ", current_volume)
+            ))
+        end
+    })
+
     -- Create the wibox
     local topbox = awful.wibar({ position = "top", screen = s })
 
@@ -173,6 +191,7 @@ local function builder(s)
         {
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
+            volumebox.widget,
             keyboardlayout,
             textclock
         }
@@ -205,5 +224,5 @@ local function builder(s)
 end
 
 return {
-	builder = builder
+    builder = builder
 }

@@ -4,7 +4,6 @@ local naughty = require("naughty")
 
 local titlebar = require("window.titlebar")
 local signals = require("window.signals")
-local screen = require("window.screen")
 
 -- Enable VIM help for hotkeys widget when client with matching name is opened:
 require("awful.hotkeys_popup.keys.vim")
@@ -44,7 +43,7 @@ local function init()
 
 	titlebar.init()
 	signals.init()
-	screen.init()
+	require("gui")
 end
 
 return { 

@@ -10,6 +10,7 @@ local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
 local theme = {}
+theme.confdir = os.getenv("HOME").."/.config/awesome/themes/default"
 
 theme.font          = "sans 8"
 
@@ -116,6 +117,8 @@ theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
 theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
 theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
 theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+
+theme.menu_icon = theme.confdir .. "/icons/menu.png"
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(

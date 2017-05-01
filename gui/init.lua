@@ -5,6 +5,7 @@ local beautiful = require("beautiful")
 local menubar = require("menubar")
 local utils = require("window.utils")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local freedesktop = require("freedesktop")
 
 local function client_menu_toggle_fn()
     local instance = nil
@@ -52,8 +53,7 @@ local function builder(s)
     -- }}}
 
     -- {{{ Menu
-    -- Create a launcher widget and a main menu
-    myawesomemenu = {
+    local myawesomemenu = {
         { "hotkeys", function() return false, hotkeys_popup.show_help end },
         { "manual", terminal .. " -e man awesome" },
         { "edit config", editor_cmd .. " " .. awesome.conffile },
@@ -61,15 +61,19 @@ local function builder(s)
         { "quit", function() awesome.quit() end }
     }
 
-    mymainmenu = awful.menu({ 
-        items = { 
-            { "awesome", myawesomemenu, beautiful.awesome_icon },
-            { "open terminal", terminal }
-        }
+    local mymainmenu = freedesktop.menu.build({
+        icon_size = beautiful.menu_height or 16,
+        before = {
+            { "Awesome", myawesomemenu, beautiful.awesome_icon },
+        },
+        after = {
+            { "Open terminal", terminal },
+        },
+        skip_items = {"Avahi", "urxvt", "Network Co", "V4L2"}
     })
 
     mylauncher = awful.widget.launcher({ 
-        image = beautiful.awesome_icon,
+        image = beautiful.menu_icon,
         menu = mymainmenu 
     })
 

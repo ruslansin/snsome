@@ -1,7 +1,6 @@
 local awful = require("awful")
-local gears = require("gears")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
+local theme = require("beautiful")
 local menubar = require("menubar")
 local utils = require("window.utils")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
@@ -35,13 +34,13 @@ local function builder(s)
     awful.layout.layouts = {
         awful.layout.suit.floating,
         awful.layout.suit.tile,
-        awful.layout.suit.tile.left,
+        -- awful.layout.suit.tile.left,
         -- awful.layout.suit.tile.bottom,
         -- awful.layout.suit.tile.top,
         -- awful.layout.suit.fair,
         -- awful.layout.suit.fair.horizontal,
         -- awful.layout.suit.spiral,
-        -- awful.layout.suit.spiral.dwindle,
+        awful.layout.suit.spiral.dwindle,
         -- awful.layout.suit.max,
         -- awful.layout.suit.max.fullscreen,
         -- awful.layout.suit.magnifier,
@@ -53,7 +52,7 @@ local function builder(s)
     -- }}}
 
     -- {{{ Menu
-    local myawesomemenu = {
+    local awesomemenu = {
         { "hotkeys", function() return false, hotkeys_popup.show_help end },
         { "manual", terminal .. " -e man awesome" },
         { "edit config", editor_cmd .. " " .. awesome.conffile },
@@ -61,10 +60,10 @@ local function builder(s)
         { "quit", function() awesome.quit() end }
     }
 
-    local mymainmenu = freedesktop.menu.build({
-        icon_size = beautiful.menu_height or 16,
+    local mainmenu = freedesktop.menu.build({
+        icon_size = theme.menu_height or 16,
         before = {
-            { "Awesome", myawesomemenu, beautiful.awesome_icon },
+            { "Awesome", awesomemenu, theme.awesome_icon },
         },
         after = {
             { "Open terminal", terminal },
@@ -72,9 +71,11 @@ local function builder(s)
         skip_items = {"Avahi", "urxvt", "Network Co", "V4L2"}
     })
 
-    mylauncher = awful.widget.launcher({ 
-        image = beautiful.menu_icon,
-        menu = mymainmenu 
+    awful.util.mainmenu = mainmenu;
+
+    local launcher = awful.widget.launcher({ 
+        image = theme.menu_icon,
+        menu = mainmenu 
     })
 
     -- Menubar configuration
@@ -82,14 +83,14 @@ local function builder(s)
     -- }}}
 
     -- Keyboard map indicator and switcher
-    mykeyboardlayout = awful.widget.keyboardlayout()
+    keyboardlayout = awful.widget.keyboardlayout()
 
     -- {{{ Wibar
     -- Create a textclock widget
-    mytextclock = wibox.widget.textclock()
+    textclock = wibox.widget.textclock()
 
     -- Create a wibox for each screen and add it
-    local taglist_buttons = gears.table.join(
+    awful.util.taglist_buttons = awful.util.table.join(
         awful.button({}, 1, function(t) t:view_only() end),
         awful.button({modkey }, 1, function(t)
             if client.focus then
@@ -106,7 +107,7 @@ local function builder(s)
         awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
     )
 
-    local tasklist_buttons = gears.table.join(
+    awful.util.tasklist_buttons = awful.util.table.join(
         awful.button({}, 1, function (c)
             if c == client.focus then
                 c.minimized = true
@@ -139,52 +140,63 @@ local function builder(s)
     awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
-    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(
-        gears.table.join(
-          awful.button({}, 1, function () awful.layout.inc( 1) end),
+    local promptbox = awful.widget.prompt()
+
+    layoutbox = awful.widget.layoutbox(s)
+    layoutbox:buttons(
+        awful.util.table.join(
+          awful.button({}, 1, function () awful.layout.inc(1) end),
           awful.button({}, 3, function () awful.layout.inc(-1) end),
-          awful.button({}, 4, function () awful.layout.inc( 1) end),
+          awful.button({}, 4, function () awful.layout.inc(1) end),
           awful.button({}, 5, function () awful.layout.inc(-1) end)
         ) 
     )
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
+    local taglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
     -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+    local tasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    local topbox = awful.wibar({ position = "top", screen = s })
 
     -- Add widgets to the wibox
-    s.mywibox:setup {
+    topbox:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        {
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
+            launcher,
+            taglist,
+            promptbox,
         },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
+        nil,
+        {
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
+            keyboardlayout,
+            textclock
+        }
+    }
+
+    -- bottom
+    local bottombox = awful.wibar({ position = "bottom", screen = s, border_width = 0, height = 20, bg = theme.bg_normal, fg = theme.fg_normal })
+
+    bottombox:setup {
+        layout = wibox.layout.align.horizontal,
+        {
+            layout = wibox.layout.fixed.horizontal,
+        },
+        tasklist,
+        {
+            layout = wibox.layout.fixed.horizontal,
+            layoutbox
         },
     }
 
-
-
     -- {{{ Mouse bindings
-    root.buttons(gears.table.join(
+    root.buttons(awful.util.table.join(
         awful.button({}, 3, function () 
-            mymainmenu:toggle() 
+            awful.util.mainmenu:toggle() 
         end),
         awful.button({}, 4, awful.tag.viewnext),
         awful.button({}, 5, awful.tag.viewprev)

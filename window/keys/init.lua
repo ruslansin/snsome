@@ -8,8 +8,8 @@ local keys = {
 local function init()
 	return
 	{
-	    globalkeys = global.init(keys),
-	    clientkeys = client.init(keys)
+	    global = global.init(keys),
+	    client = client.init(keys)
 	}
 end
 

@@ -1,11 +1,10 @@
-local workspace = require("window")
-local rules = require("window.rules")
-local keys = require("window.keys")
+local window = require("window").init()
 
+local keys = require("window.keys").init()
 
--- init workspace
-workspace.init()
---init keys
-local wmkeys = keys.init()
--- init rules
-rules.init(wmkeys.clientkeys)
+local rules = require("window.rules").init(
+    {
+        clientkeys = keys.client.clientkeys,
+        clientbuttons = keys.client.clientbuttons
+    }
+)

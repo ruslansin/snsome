@@ -47,7 +47,7 @@ awful.layout.layouts = {
 local terminal = awesome.xrdb_get_value("", "snsome.terminal") or "xterm"
 local editor = awesome.xrdb_get_value("", "snsome.editor") or os.getenv("EDITOR") or "nano"
 local editor_cmd = terminal .. " -e " .. editor
-
+local modkey = awesome.xrdb_get_value("", "snsome.modkey") or "Mod4"
 local markup = lain.util.markup
 
 -- {{{ Menu

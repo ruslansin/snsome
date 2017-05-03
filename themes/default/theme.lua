@@ -24,6 +24,7 @@ theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ff8c00"
 theme.fg_urgent     = "#af1d18"
 theme.fg_minimize   = "#ffffff"
+theme.mail_new		= theme.fg_focus
 
 theme.useless_gap   = 0
 theme.border_width  = dpi(1)

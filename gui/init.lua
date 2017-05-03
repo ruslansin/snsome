@@ -104,11 +104,25 @@ if (theme.mail ~= nil) then
         mail     = theme.mail.login,
         password = theme.mail.password,
         settings = function()
-            widget:set_markup(markup.fontfg(theme.font, theme.fg_normal, string.format(" M: %s ", mailcount)))
+            widget:set_markup(
+                markup.fontfg(
+                    theme.font, 
+                    mailcount > 0 and theme.mail_new or theme.fg_normal,
+                    string.format(" M: %s ", mailcount
+                )
+            )
+        )
         end
     })
     mail_widget = mail_widget.widget
 end
+
+-- Net
+local net_widget = lain.widget.net({
+    settings = function()
+        widget:set_markup(markup.fontfg(theme.font, theme.fg_normal, string.format(" v%skbps ^%skbps ", net_now.received, net_now.sent)))
+    end
+})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -214,8 +228,9 @@ awful.screen.connect_for_each_screen(function(s)
         nil,
         {
             layout = wibox.layout.fixed.horizontal,
-            mail_widget,
             wibox.widget.systray(),
+            net_widget,
+            mail_widget,
             volumebox.widget,
             keyboardlayout,
             textclock

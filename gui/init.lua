@@ -94,6 +94,22 @@ local volumebox = lain.widget.pulseaudio({
     end
 })
 
+-- It is necessary to declare your own values in the theme.mail = {}
+-- Mail IMAP check
+local mail_widget = nil
+if (theme.mail ~= nil) then
+    mail_widget = lain.widget.imap({
+        timeout  = theme.mail.timeout,
+        server   = theme.mail.server,
+        mail     = theme.mail.login,
+        password = theme.mail.password,
+        settings = function()
+            widget:set_markup(markup.fontfg(theme.font, theme.fg_normal, string.format(" M: %s ", mailcount)))
+        end
+    })
+    mail_widget = mail_widget.widget
+end
+
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -198,6 +214,7 @@ awful.screen.connect_for_each_screen(function(s)
         nil,
         {
             layout = wibox.layout.fixed.horizontal,
+            mail_widget,
             wibox.widget.systray(),
             volumebox.widget,
             keyboardlayout,

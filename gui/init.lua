@@ -67,7 +67,7 @@ local mainmenu = freedesktop.menu.build({
     after = {
         { "Open terminal", terminal },
     },
-    skip_items = {"Avahi", "urxvt", "Network Co", "V4L2"}
+    skip_items = {"Avahi", "urxvt", "Network Co", "V4L2", "OpenJDK"}
 })
 
 awful.util.mainmenu = mainmenu

@@ -81,16 +81,22 @@ local launcher_widget = awful.widget.launcher({
 local volumebox = lain.widget.pulseaudio({
     settings = function()
         local current_volume = "N/A"
+        local volume = 0;
         if volume_now.left == volume_now.right then
             current_volume = string.format("%s%%", volume_now.left)
+            volume = tonumber(volume_now.left)
         else
             current_volume = string.format("l.%s|r.%s%%", volume_now.left, volume_now.right)
+            volume = math.max(tonumber(volume_now.left), tonumber(volume_now.right))
         end
         if volume_now.muted == "yes" then
             current_volume = string.format("%s mute", current_volume)
         end
+        local text_color = volume >= 150 and theme.volume150 
+            or volume > 100 and theme.volume100 
+            or theme.fg_normal
         widget:set_markup(markup.fontfg(
-            theme.font, theme.fg_normal, string.format(" V: %s ", current_volume)
+            theme.font, text_color, string.format(" V: %s ", current_volume)
         ))
     end
 })

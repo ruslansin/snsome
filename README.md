@@ -3,6 +3,13 @@
 ### Decription 
 Theme for Awesome WM 4.x
 
+### Installation
+
+```shell
+git clone --recursive https://github.com/snqlby/snsome.git
+mv -bv snsome/* ~/.config/awesome; rm -r snsome
+```
+
 ### Usage example (rc.lua)
 
 ```Lua

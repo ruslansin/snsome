@@ -35,3 +35,13 @@ require("init")
 autostart.run()
 
 ```
+
+### Additional configuration: .Xresources
+
+```
+!snsome configuration (default values)
+snsome.terminal: xterm
+snsome.editor: nano
+snsome.modkey: Mod4
+snsome.theme: default
+```

@@ -1,0 +1,30 @@
+## SNSOME
+
+### Decription 
+Theme for Awesome WM 4.x
+
+### Usage example (rc.lua)
+
+```Lua
+local theme = require("beautiful")
+local autostart = require("utils.autostart")
+
+-- mail configuration (optional)
+theme.mail = {
+	timeout = 30,
+	server = "IMAP_SERVER",
+	login = "YOUR_LOGIN",
+	password = "PASSWORD"
+}
+-- menu configuration (optional)
+theme.menu_skip = {
+	"Avahi", "urxvt", "Network Co", "V4L2", "OpenJDK"
+}
+
+-- init theme (required)
+require("init") 
+
+-- autostart all apps from "$HOME/.config/autostart" directory (optional)
+autostart.run()
+
+```

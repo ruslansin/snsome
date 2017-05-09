@@ -1,5 +1,5 @@
 local utils = require("menubar.utils")
-local awful = require("awful")
+local spawn = require("awful.spawn")
 
 local autostart = {}
 
@@ -8,9 +8,9 @@ function autostart.process(apps)
 		local terminal = v.Terminal or "unknown"
 		local cmdline = v.cmdline
 		if (terminal == "true") then
-			awful.with_shell(cmdline)
+			spawn.with_shell(cmdline)
 		else
-			awful.spawn(cmdline)
+			spawn.spawn(cmdline)
 		end
 	end
 end

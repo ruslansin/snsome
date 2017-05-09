@@ -7,6 +7,7 @@ local utils = require("window.utils")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local freedesktop = require("freedesktop")
 local lain = require("lain")
+local checkupdates = require("widget.check_updates")
 
 local function client_menu_toggle_fn()
     local instance = nil
@@ -34,7 +35,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
@@ -122,6 +123,25 @@ if (theme.mail ~= nil) then
         end
     })
     mail_widget = mail_widget.widget
+end
+
+-- Update
+local updates_widget = nil
+if (theme.updates ~= nil) then
+    updates_widget = checkupdates({
+        timeout = theme.updates.timeout,
+        distro = theme.updates.distro,
+        onclick = theme.updates.onclick,
+        settings = function()
+            widget:set_markup(
+                markup.fontfg(
+                    theme.font,
+                    updates.count > 0 and theme.updates_new or theme.fg_normal,
+                    string.format(" U: %s ", updates.count)
+                )
+            )
+        end
+    })
 end
 
 -- Net
@@ -239,6 +259,7 @@ awful.screen.connect_for_each_screen(function(s)
             net_widget,
             mail_widget,
             volumebox.widget,
+            updates_widget.widget,
             keyboardlayout,
             textclock
         }

@@ -13,6 +13,7 @@ mv -bv snsome/* ~/.config/awesome; rm -r snsome
 ### Usage example (rc.lua)
 
 ```Lua
+local spawn = require("awful.spawn")
 local theme = require("beautiful")
 local autostart = require("utils.autostart")
 
@@ -23,6 +24,16 @@ theme.mail = {
 	login = "YOUR_LOGIN",
 	password = "PASSWORD"
 }
+
+--checkupdate widget configuration (optional)
+theme.updates = {
+	timeout = 60,
+	distro = "arch_pacaur",
+	onclick = function()
+		spawn("urxvt -hold -e sh -c 'pacaur -Syu'") 
+	end
+}
+
 -- menu configuration (optional)
 theme.menu_skip = {
 	"Avahi", "urxvt", "Network Co", "V4L2", "OpenJDK"

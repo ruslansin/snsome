@@ -25,6 +25,7 @@ theme.fg_focus      = "#ff8c00"
 theme.fg_urgent     = "#af1d18"
 theme.fg_minimize   = "#ffffff"
 theme.mail_new		= theme.fg_focus
+theme.updates_new	= theme.fg_focus
 
 theme.volume100		= theme.fg_focus
 theme.volume150		= "#ff0000"

@@ -4,12 +4,13 @@
 
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
+local beautiful = require("beautiful")
 local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
-local theme = {}
+local theme = beautiful.get() or {}
 theme.confdir = os.getenv("HOME").."/.config/awesome/themes/default"
 
 theme.font          = "Tamzen 9"
